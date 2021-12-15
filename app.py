@@ -369,7 +369,10 @@ def navigation():
 	    except Error as e:
 	        print(e)
 	#data = ["terrace"]
-	return render_template('navigation.html', data=data[0])	
+	if(new_data.activeMap != None):
+	    return render_template('navigation.html', data=data[0])
+	else:
+		return render_template('na.html')	
 
 
 
