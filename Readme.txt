@@ -1,6 +1,4 @@
-Thanks for downloading this template!
-
-Template Name: NiceAdmin
-Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-Author: BootstrapMade.com
-License: https://bootstrapmade.com/license/
+Ros Web Application 
+Mapping Navigation
+Save maps to database
+select and activate map from database 
