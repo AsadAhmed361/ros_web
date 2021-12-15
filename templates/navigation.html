@@ -1,0 +1,119 @@
+{% extends "layout.html" %}
+{% block title %}
+Navigation
+{% endblock %}
+
+{% block content %}
+<script>
+  var current_map='{{data|tojson}}';
+  
+  
+</script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/navigation.js')}}"></script>
+
+<main id="main" class="main">
+    
+    
+    <section class="section dashboard">
+      <div class="row">
+
+        <!-- Left side columns -->
+        <div class="col-lg-12">
+          <div class="row">
+
+         <br>
+            <div class="col-xxl-4 col-xl-12">
+
+              <div class="card info-card customers-card">
+
+               
+
+                <div class="card-body">
+                  <h5 class="card-title">Train Navigation <span>| {{data[0]}} Train waypoints</span></h5>
+                  
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    
+                    
+                    
+                    
+                   
+                    
+
+                    <div class="robo-map-controls">
+                        <div class="controls">
+                            <ul>
+                                <li>
+                                    <a href="#">
+                                        <div class="zoom-ctrl" id="zoomplus"><i class="fa fa-plus-circle fa-3x"></i><span class="caption">Zoom in</span></div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <div class="zoom-ctrl" id="zoomminus"><i class="fa fa-minus-circle fa-3x"></i><span class="caption">Zoom out</span></div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <div class="localizee" id="home"><i class="fa fa-map-marker fa-3x"></i><span class="caption">Initialize</span></div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <div class="stop-tool" id="stop"><i class="fa fa-hand-paper-o fa-3x"></i><span class="caption">Stop</span></div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <div class="ctrl-wrap" id="room_navigate"><i class="fa fa-paper-plane fa-5x"></i><span class="caption">Navigate</span></div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                <div id="nav" class="canvasScreen"></div>
+                <!-- <div class="joy-container"> -->
+                
+                    <div class="modal-load">
+                   
+                    </div>
+                    
+                </div>
+              </div>
+
+            </div><!-- End Customers Card -->
+
+          
+
+          </div>
+        </div><!-- End Left side columns -->
+        
+
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+
+
+{% endblock %}

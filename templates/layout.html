@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>
+      {% block title %}
+      {% endblock %}
+
+  </title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+  <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js')}}"></script>
+  <script src="{{ url_for('static', filename='/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+  <script src="{{ url_for('static', filename='/vendor/simple-datatables/simple-datatables.js')}}"></script>
+  <script src="{{ url_for('static', filename='/vendor/tinymce/tinymce.min.js')}}"></script>
+  <script src="{{ url_for('static', filename='/js/main.js')}}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/easeljs.min.js')}}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/eventemitter2.min.js')}}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/roslib.min.js')}}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/ros2d.js')}}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/nav2d.js')}}"></script>
+
+  <!-- Favicons -->
+  <link href="{{ url_for('static', filename='/img/favicon.png')}}" rel="icon">
+  <link href="{{ url_for('static', filename='/img/apple-touch-icon.png')}}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/font-awesome-4.7.0/css/font-awesome.min.css')}}">
+  <link href="{{ url_for('static', filename='/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='/vendor/bootstrap-icons/bootstrap-icons.css')}}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='/vendor/simple-datatables/style.css')}}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{{ url_for('static', filename='/css/style.css')}}" rel="stylesheet">
+
+ 
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="index.html" class="logo d-flex align-items-center">
+        <img src="{{ url_for('static', filename='/img/logo.png')}}" alt="">
+        <span class="d-none d-lg-block">Sign Robouto</span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+  
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+
+        <li class="nav-item d-block d-lg-none">
+          <a class="nav-link nav-icon search-bar-toggle " href="#">
+            <i class="bi bi-search"></i>
+          </a>
+        </li><!-- End Search Icon-->
+
+        <li class="nav-item dropdown">
+
+          <a class="nav-link nav-icon" href="#" >
+            <i class="bi bi-battery-half"></i>
+            
+          </a><!-- End Notification Icon -->
+
+         
+
+        </li><!-- End Notification Nav -->
+
+       
+
+       
+
+      </ul>
+    </nav><!-- End Icons Navigation -->
+
+  </header><!-- End Header -->
+
+  <!-- ======= Sidebar ======= -->
+  <aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      <li class="nav-item">
+        <a class="nav-link " href="{{ url_for('index') }}">
+          <i class="bi bi-grid"></i>
+          <span>Dashboard</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+
+      
+
+    
+
+   
+
+      <li class="nav-heading">Activities</li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{{ url_for('mapping') }}">
+          <i class="bi bi-map"></i>
+          <span>Room Mapping</span>
+        </a>
+      </li><!-- End Profile Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{{ url_for('navigation') }}">
+          <i class="bi bi-file-earmark "></i>
+          <span>Navigation Training</span>
+        </a>
+      </li><!-- End F.A.Q Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{{ url_for('corridor_mapping') }}">
+          <i class="bi bi-map"></i>
+          <span>Corridor Mapping</span>
+        </a>
+      </li><!-- End Profile Page Nav -->
+
+      <li  class="nav-item">
+        <a style=color:red class="nav-link collapsed" href="{{ url_for('corridor_poses') }}">
+          <i style=color:red class="bi bi-x"></i>
+          <span >Remove Corridor Poses</span>
+        </a>
+      </li><!-- End Profile Page Nav -->
+
+      
+
+    
+
+    </ul>
+
+  </aside><!-- End Sidebar-->
+
+ 
+  {% block content %}
+  {% endblock %}
+  
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+
+
+  
+  <script src="{{ url_for('static', filename='/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+  <script src="{{ url_for('static', filename='/vendor/simple-datatables/simple-datatables.js')}}"></script>
+  <script src="{{ url_for('static', filename='/vendor/tinymce/tinymce.min.js')}}"></script>
+  <script src="{{ url_for('static', filename='/js/main.js')}}"></script>
+    
+</body>
+
+</html>

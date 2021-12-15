@@ -1,0 +1,125 @@
+{% extends "layout.html" %}
+{% block title %}
+Corridor Mapping
+{% endblock %}
+
+{% block content %}
+<script type="text/javascript" src="{{ url_for('static', filename='js/nipple.min.js')}}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/mapping.js')}}"></script>
+<main id="main" class="main">
+    
+    
+    <section class="section dashboard">
+      <div class="row">
+
+        <!-- Left side columns -->
+        <div class="col-lg-12">
+          <div class="row">
+
+         <br>
+            <div class="col-xxl-4 col-xl-12">
+
+              <div class="card info-card customers-card">
+
+               
+
+                <div class="card-body">
+                  <h5 class="card-title">Mapping <span>| Create & edit maps</span></h5>
+                  
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                   
+                    
+                    
+                    
+                   
+                    
+
+                  <div class="robo-map-controls">
+                    <div  class="controls-mapping">
+                        <ul>
+                            <li>
+                                <a href="">
+                                    <button style="position: absolute; top:0%; right:45%"  type="button" class="btn btn-success mapping-button" id="savecorridormap">Save Map</button>
+                                </a>
+                                </li>
+                            <li>
+                                <a href="#">
+                                    <div class="zoom-ctrl" id="zoomplus"><i class="fa fa-plus-circle fa-3x"></i><span class="caption">Zoom in</span></div>
+                                </a>
+                            </li>
+                
+                            <li>
+                                <a href="#">
+                                    <div class="zoom-ctrl" id="zoomminus"><i class="fa fa-minus-circle fa-3x"></i><span class="caption">Zoom out</span></div>
+                                </a>
+                            </li>  
+                                   
+                        </ul>
+                    </div>
+                </div>
+                <div id="nav" class="canvasScreen"></div>
+                <!-- <div class="joy-container"> -->
+                <div id="zonejoystick" class="joy-stick"></div>
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Choose map</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="list-group" id ="index-list-map">
+                                        {% for maps in map %}
+                                        <a class="list-group-item list-group-item-action" style="cursor:pointer;">{{maps[1]}}</a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-load">
+                   
+                    </div>
+                    
+                </div>
+              </div>
+
+            </div><!-- End Customers Card -->
+
+          
+
+          </div>
+        </div><!-- End Left side columns -->
+        
+
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+
+
+{% endblock %}
