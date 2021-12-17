@@ -1,0 +1,46 @@
+{% extends "op_layout.html" %}
+{% block title %}
+Select Pose
+{% endblock %}
+
+{% block content %}
+<main id="main" class="main">
+
+    
+  
+  <nav class="navbar navbar-expand-sm fixed-top py-3">
+    
+       
+        
+        <div id="navbarSupportedContent" class="collapse navbar-collapse">
+            <ul class="navbar-nav ">
+              <li class="nav-item active"><a href="#" >  </a></li>
+                <li class="nav-item active"><a href="#" ><img src="{{ url_for('static', filename='/img/back-arrow.png')}}" alt=""></a></li>
+                <li class="nav-item active"><a href="#" >  </a></li>
+                <li class="nav-item active"><a href="#" >  </a></li>
+                <li class="nav-item active"><a href="#" >  </a></li>
+                <li class="nav-item active"><a href="#" >  </a></li>
+                <li class="nav-item active"><a href="#" >  </a></li>
+                <li class="nav-item active"><a href="#" >  </a></li>
+                <li class="nav-item active"><a href="#" >  </a></li>
+                <li class="nav-item active"><a href="#" >  </a></li>
+                <li class="nav-item active"><a href="#" >  </a></li>
+                <li class="nav-item active"><a href="#" >  </a></li>
+                
+               
+                <li class="nav-item active"><a href="#" ><img src="{{ url_for('static', filename='/img/manual.png')}}" alt=""></a></li>
+                
+            </ul>
+        </div>
+    </div>
+</nav>
+<br>
+<br>
+<ul class="list-group">
+    {% for pose in poses %}
+    <li style="font-size: large; "class="list-group-item"><h3>{{pose}}</h3></li>
+    {% endfor %}
+  </ul>
+
+</main>
+{% endblock %}

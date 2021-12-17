@@ -1,0 +1,42 @@
+{% extends "op_layout.html" %}
+{% block title %}
+Operation Index
+{% endblock %}
+
+{% block content %}
+<main id="main" class="main">
+
+    
+  <div class="text-center">
+    <img src="{{ url_for('static', filename='/img/uvd_logo.png')}}" class="rounded" alt="...">
+  </div>
+<br>
+<br>
+<br>
+<br>
+<br>
+  <nav class="navbar navbar-expand-lg  py-3">
+    
+       
+        
+        <div id="navbarSupportedContent" class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item active"><a href="#" >  </a></li>
+                <li class="nav-item active"><a href="#" ><img src="{{ url_for('static', filename='/img/setting.png')}}" alt=""></a></li>
+                <li class="nav-item active"><a href="#" ><img src="{{ url_for('static', filename='/img/analyse.png')}}" alt=""></a></li>
+                <li class="nav-item active"><a href="#" ><img src="{{ url_for('static', filename='/img/blank.png')}}" alt=""></a></li>
+                <li class="nav-item active"><a href="#" >  </a></li>
+                <li class="nav-item active"><a href="#" >  </a></li>
+                <li class="nav-item active"><a href="#" >  </a></li>
+                <li class="nav-item active"><a href="#" ><img src="{{ url_for('static', filename='/img/blank.png')}}" alt=""></a></li><li class="nav-item active"><a href="#" ><img src="{{ url_for('static', filename='/img/blank.png')}}" alt=""></a></li>
+                <li class="nav-item active"><a href="#" ><img src="{{ url_for('static', filename='/img/blank.png')}}" alt=""></a></li>
+                <li class="nav-item active"><a href="#" ><img src="{{ url_for('static', filename='/img/thunder.png')}}" alt=""></a></li>
+                <li class="nav-item active"><a href="#" ><img src="{{ url_for('static', filename='/img/stopwatch.png')}}" alt=""></a></li>
+                <li class="nav-item active"><a href="{{url_for('select_pose')}}" ><img src="{{ url_for('static', filename='/img/radio-on.png')}}" alt=""></a></li>
+                <li class="nav-item active"><a href="#" ><img src="{{ url_for('static', filename='/img/stop.png')}}" alt=""></a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+</main>
+{% endblock %}

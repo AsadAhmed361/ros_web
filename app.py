@@ -13,14 +13,25 @@ app = Flask(__name__)
 
 class DataStore():
 	navigation=None
+	navigation_touchgoal=None
 	mapping=None
 	activeMap=None
 
 class roslaunch_process():
     @classmethod
+    def start_navigation_touchgoal(self,mapname):
+        
+        self.process_navigation_touchgoal = subprocess.Popen(["roslaunch","--wait", "turtlebot3_navigation", "turtlebot3_navigation_touchgoal.launch","map_file:="+os.getcwd()+"/static/"+mapname+".yaml"])
+	
+    @classmethod
     def start_navigation(self,mapname):
         
-        self.process_navigation = subprocess.Popen(["roslaunch","--wait", "turtlebot3_navigation", "turtlebot3_navigation_touchgoal.launch","map_file:="+os.getcwd()+"/static/"+mapname+".yaml"])
+        self.process_navigation = subprocess.Popen(["roslaunch","--wait", "turtlebot3_navigation", "turtlebot3_navigation.launch","map_file:="+os.getcwd()+"/static/"+mapname+".yaml"])
+
+
+    @classmethod
+    def stop_navigation_touchgoal(self):
+        self.process_navigation_touchgoal.send_signal(signal.SIGINT)	
 
     @classmethod
     def stop_navigation(self):
@@ -226,15 +237,21 @@ def start_nav():
 					    time.sleep(2)
 					except:
 					    pass
-					if new_data.navigation==True:
-					    new_data.navigation=False
-					    roslaunch_process.stop_navigation()
+
+					if(new_data.navigation==True):
+						roslaunch_process.stop_navigation()
+						new_data.navigation=False
+						time.sleep(2)
+
+					if new_data.navigation_touchgoal==True:
+					    new_data.navigation_touchgoal=False
+					    roslaunch_process.stop_navigation_touchgoal()
 					    time.sleep(2)
-					    roslaunch_process.start_navigation(mapname)
-					    new_data.navigation=True
+					    roslaunch_process.start_navigation_touchgoal(mapname)
+					    new_data.navigation_touchgoal=True
 					else:
-					    roslaunch_process.start_navigation(mapname)
-					    new_data.navigation=True
+					    roslaunch_process.start_navigation_touchgoal(mapname)
+					    new_data.navigation_touchgoal=True
 					#print(active_map)
 				else:
 				        update_task(get_db(), ('warning', 'inactive', aMap))
@@ -259,9 +276,9 @@ def stop():
 	
 @app.route('/mapping')
 def mapping():
-    if new_data.navigation==True:
-        roslaunch_process.stop_navigation()
-        new_data.navigation=False
+    if new_data.navigation_touchgoal==True:
+        roslaunch_process.stop_navigation_touchgoal()
+        new_data.navigation_touchgoal=False
         time.sleep(2)
 
     if(new_data.mapping==True):
@@ -275,9 +292,9 @@ def mapping():
 
 @app.route('/corridor_mapping')
 def corridor_mapping():
-    if new_data.navigation==True:
-        roslaunch_process.stop_navigation()
-        new_data.navigation=False
+    if new_data.navigation_touchgoal==True:
+        roslaunch_process.stop_navigation_touchgoal()
+        new_data.navigation_touchgoal=False
         time.sleep(2)
 
     if(new_data.mapping==True):
@@ -305,8 +322,8 @@ def savemap():
 	new_data.mapping=False
 	roslaunch_process.stop_mapping()
 	if(new_data.activeMap != None):
-	    new_data.navigation=True
-	    roslaunch_process.start_navigation(new_data.activeMap)
+	    new_data.navigation_touchgoal=True
+	    roslaunch_process.start_navigation_touchgoal(new_data.activeMap)
 	return("success")
 	#return redirect(url_for("index"))
 	#return render_template('index.html',map = data)
@@ -328,8 +345,8 @@ def corridor_savemap():
 	new_data.mapping=False
 	roslaunch_process.stop_mapping()
 	if(new_data.activeMap != None):
-	    new_data.navigation=True
-	    roslaunch_process.start_navigation(new_data.activeMap)
+	    new_data.navigation_touchgoal=True
+	    roslaunch_process.start_navigation_touchgoal(new_data.activeMap)
 	return("success")
 	#return redirect(url_for("index"))
 	#return render_template('index.html',map = data)
@@ -357,9 +374,9 @@ def navigation():
 		time.sleep(2)
 	except:
 		pass
-	if new_data.navigation==False:
-		new_data.navigation=True
-		roslaunch_process.start_navigation(new_data.activeMap)    
+	if new_data.navigation_touchgoal==False:
+		new_data.navigation_touchgoal=True
+		roslaunch_process.start_navigation_touchgoal(new_data.activeMap)    
 	with get_db():
 	    try:
 	        c = get_db().cursor()
@@ -375,6 +392,37 @@ def navigation():
 		return render_template('na.html')	
 
 
+#Operation application part
+@app.route('/opindex')
+def op_index():
+	return render_template('op_index.html')
+
+@app.route('/selectpose')
+def select_pose():
+	if new_data.mapping==True:
+		roslaunch_process.stop_mapping()
+		new_data.mapping=False
+		
+	if new_data.navigation_touchgoal == True:
+		roslaunch_process.stop_navigation_touchgoal()
+		new_data.navigation_touchgoal=False
+
+		roslaunch_process.start_navigation("corridor_map")
+		new_data.navigation=True
+	else:
+		roslaunch_process.start_navigation("corridor_map")
+		new_data.navigation=True
+	poses=[]
+	for x in os.listdir(os.getcwd()+"/static/"):
+	    if x.endswith(".json"):
+	        posename=x[:x.index(".")]
+	        _posename=posename.replace("_"," ")
+	        poses.append(_posename)
+	        
+	        #print(poses)
+	
+
+	return render_template('select_pose.html', poses=poses)
 
 
 if __name__ == '__main__':
