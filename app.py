@@ -6,16 +6,68 @@ import os
 import time
 import sqlite3
 import json
+import csv
 
 
 active_map=" "
 app = Flask(__name__)
 
 class DataStore():
-	navigation=None
-	navigation_touchgoal=None
-	mapping=None
+	navigation=False
+	navigation_touchgoal=False
+	mapping=False
 	activeMap=None
+	previousMap=None
+
+def update_task(conn, task):
+    """
+    update priority, begin_date, and end date of a task
+    :param conn:
+    :param task:
+    :return: project id
+    """
+    sql = ''' UPDATE maps
+              SET status = ? ,
+                  statusTitle = ?
+
+              WHERE name = ?'''
+    cur = conn.cursor()
+    cur.execute(sql, task)
+    conn.commit()
+
+def create_task(conn, task):
+    """
+    Create a new task
+    :param conn:
+    :param task:
+    :return:
+    """
+
+    sql = ''' INSERT INTO maps(name,status,statusTitle)
+              VALUES(?,?,?) '''
+    cur = conn.cursor()
+    cur.execute(sql, task)
+    conn.commit()
+    return cur.lastrowid
+
+def my_join(tpl):
+    return ', '.join(x if isinstance(x, str) else my_join(x) for x in tpl)
+
+
+def deactivateMap(name):
+    try:
+        mapname=name
+        update_task(get_db(), ('warning', 'Inactive', mapname))
+    except Error as e:
+        print(e)
+def activateMap(name):
+    try:
+        mapname=name
+        update_task(get_db(), ('success', 'Activated', mapname))
+        new_data.activeMap=name
+    except Error as e:
+        print(e)
+
 
 class roslaunch_process():
     @classmethod
@@ -158,38 +210,6 @@ def deleteposes():
 
 	return redirect('/')	
 
-def update_task(conn, task):
-    """
-    update priority, begin_date, and end date of a task
-    :param conn:
-    :param task:
-    :return: project id
-    """
-    sql = ''' UPDATE maps
-              SET status = ? ,
-                  statusTitle = ?
-              WHERE name = ?'''
-    cur = conn.cursor()
-    cur.execute(sql, task)
-    conn.commit()
-
-def create_task(conn, task):
-    """
-    Create a new task
-    :param conn:
-    :param task:
-    :return:
-    """
-
-    sql = ''' INSERT INTO maps(name,status,statusTitle)
-              VALUES(?,?,?) '''
-    cur = conn.cursor()
-    cur.execute(sql, task)
-    conn.commit()
-    return cur.lastrowid
-
-def my_join(tpl):
-	return ', '.join(x if isinstance(x, str) else my_join(x) for x in tpl)
 
 @app.route('/index/start_nav')
 def start_nav():
@@ -231,6 +251,7 @@ def start_nav():
 				if(aMap==mapname):
 					update_task(get_db(), ('success', 'Activated', mapname))
 					new_data.activeMap=mapname
+					new_data.previousMap=mapname
 					try:
 					    roslaunch_process.stop_mapping()
 					    new_data.mapping=False
@@ -276,6 +297,11 @@ def stop():
 	
 @app.route('/mapping')
 def mapping():
+    if new_data.navigation==True:
+        roslaunch_process.stop_navigation()
+        new_data.navigation=False
+        time.sleep(2)
+
     if new_data.navigation_touchgoal==True:
         roslaunch_process.stop_navigation_touchgoal()
         new_data.navigation_touchgoal=False
@@ -292,6 +318,11 @@ def mapping():
 
 @app.route('/corridor_mapping')
 def corridor_mapping():
+    if new_data.navigation==True:
+        roslaunch_process.stop_navigation()
+        new_data.navigation=False
+        time.sleep(2)
+		
     if new_data.navigation_touchgoal==True:
         roslaunch_process.stop_navigation_touchgoal()
         new_data.navigation_touchgoal=False
@@ -309,7 +340,24 @@ def corridor_mapping():
 
 @app.route("/mapping/savemap" , methods=['POST'])
 def savemap():
-	mapname = request.get_data().decode('utf-8')
+	mapname_rec = request.get_data().decode('utf-8')
+	x = mapname_rec.index("*")
+	mapname=mapname_rec[:x]
+	initialpose = mapname_rec[x+2:]
+	doc_pose=json.loads(initialpose)
+	print(doc_pose["position"])
+	pos_x=doc_pose["position"]["x"]
+	pos_y=doc_pose["position"]["y"]
+	orientation_z=doc_pose["orientation"]["z"]
+	orientation_w=doc_pose["orientation"]["w"]
+	Header=['frame_id','stamp','pos_x','pos_y','pos_z','orientation_x','orientation_y','orientation_z','orientation_w', 'covariance']
+	Data=['map', '0', pos_x,pos_y, '0.0', '0.0', '0.0', orientation_z, orientation_w, "(0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.06853891945200942)"]
+	path="/home/asad/ros_web/static/initialposes/"+mapname+"_initialpose.csv"
+	with open(path, 'w', encoding='UTF8') as f:
+	    writer = csv.writer(f)
+	    writer.writerow(Header)
+	    writer.writerow(Data)
+	    print(" updated")
 	#print(mapname)
 	with get_db():
 		try:
@@ -353,6 +401,7 @@ def corridor_savemap():
 
 
 
+
 @app.route("/navigation/savepose", methods=['POST'])
 def save_pose():
 	posename=request.get_data().decode('utf-8')
@@ -361,6 +410,24 @@ def save_pose():
 	_posename=posename[:x].replace(" ","_")
 	python_file = open(os.getcwd()+"/static/"+_posename+".json", "w")
 	python_file.write(posename[x+2:])
+	if _posename=="Docking_Station":
+	    dp=posename[x+2:]
+	    doc_pose=json.loads(dp)
+	    print(doc_pose["position"])
+	    pos_x=doc_pose["position"]["x"]
+	    pos_y=doc_pose["position"]["y"]
+	    orientation_z=doc_pose["orientation"]["z"]
+	    orientation_w=doc_pose["orientation"]["w"]
+	    Header=['frame_id','stamp','pos_x','pos_y','pos_z','orientation_x','orientation_y','orientation_z','orientation_w', 'covariance']
+	    Data=['map', '0', pos_x,pos_y, '0.0', '0.0', '0.0', orientation_z, orientation_w, "(0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.06853891945200942)"]
+	    path="/home/asad/ros_web/static/initialposes/corridor_map_initialpose.csv"
+	    with open(path, 'w', encoding='UTF8') as f:
+	        writer = csv.writer(f)
+	        writer.writerow(Header)
+	        writer.writerow(Data)
+	        print(" updated")
+		#python_file = open(os.getcwd()+"/static/pos.json", "w")
+	    #python_file.write(str(doc_pose["position"]))
 	return("success")
 
 
@@ -374,6 +441,12 @@ def navigation():
 		time.sleep(2)
 	except:
 		pass
+
+	if new_data.navigation==True:
+		roslaunch_process.stop_navigation()
+		new_data.navigation=False
+		time.sleep(2)
+
 	if new_data.navigation_touchgoal==False:
 		new_data.navigation_touchgoal=True
 		roslaunch_process.start_navigation_touchgoal(new_data.activeMap)    
@@ -399,6 +472,10 @@ def op_index():
 
 @app.route('/selectpose')
 def select_pose():
+	activateMap('corridor_map')
+	if(new_data.previousMap != None):
+	        deactivateMap(new_data.previousMap)
+
 	if new_data.mapping==True:
 		roslaunch_process.stop_mapping()
 		new_data.mapping=False
@@ -424,7 +501,13 @@ def select_pose():
 
 	return render_template('select_pose.html', poses=poses)
 
-
+@app.route('/selectpose/sendpose')
+def sendpose():
+	
+	posename = request.args.get('posename')
+	_posename=posename.replace(" ","_")
+	print(_posename)
+	return _posename+".json"
 if __name__ == '__main__':
 	#app.run(debug=False)
 	app.run(host='0.0.0.0', port=5000, debug=True, threaded=False)    

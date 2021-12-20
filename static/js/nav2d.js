@@ -9,6 +9,9 @@ var send_pose=null;
 
 var room_nav=false;
 var corridor_nav=false;
+var docking=false;
+var inipose_flag = false;
+var inipose_valeu=null;
 
 
 
@@ -177,6 +180,29 @@ NAV2D.Navigator = function(options) {
 
     poseListener.subscribe(function(pose) {
         // update the robots position on the map
+        if(docking==true){
+            console.log(pose);
+            $.ajax({
+                url: '/navigation/savepose',
+                type: 'POST',
+                data: "Docking Station"+"* "+JSON.stringify(pose),
+                success: function(response) {
+                    //window.location ="/";
+                    console.log(response);
+                alert("Docking Station pose Saved!")
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+
+            })
+            docking=false;
+        }
+        if (inipose_flag==true){
+            inipose_valeu=pose;
+            alert("Initial Pose Saved!")
+            inipose_flag=false;
+        }
         robotMarker.x = pose.position.x;
         robotMarker.y = -pose.position.y;
 
@@ -380,6 +406,7 @@ NAV2D.Navigator = function(options) {
                 }
                     if (homing == true) {
                       homefunc(pose);
+                      alert("initialpose saved, This is the pose for Robots Docking station!")
                     }
 
                 navigation = false;

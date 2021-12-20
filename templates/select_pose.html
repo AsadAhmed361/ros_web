@@ -38,7 +38,7 @@ Select Pose
 <br>
 <ul class="list-group">
     {% for pose in poses %}
-    <li style="font-size: large; "class="list-group-item"><h3>{{pose}}</h3></li>
+    <li style="font-size: large; "class="list-group-item"><h3><a href="{{url_for('select_pose')}}/sendpose?posename={{pose}}" style=color:black; class="droptext" >{{pose}}</a></h3></li>
     {% endfor %}
   </ul>
 

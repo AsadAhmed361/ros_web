@@ -72,7 +72,7 @@ $(document).ready(function() {
 
 
     var ros = new ROSLIB.Ros({
-        url: 'ws://192.168.0.113:9090'
+        url: 'ws://192.168.0.125:9090'
     });
 
 
