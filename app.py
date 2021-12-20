@@ -505,9 +505,10 @@ def select_pose():
 def sendpose():
 	
 	posename = request.args.get('posename')
-	_posename=posename.replace(" ","_")
-	print(_posename)
-	return _posename+".json"
+	return render_template("nav_pose.html", posename=posename)
+	#_posename=posename.replace(" ","_")
+	#print(_posename)
+	#return _posename+".json"
 if __name__ == '__main__':
 	#app.run(debug=False)
 	app.run(host='0.0.0.0', port=5000, debug=True, threaded=False)    

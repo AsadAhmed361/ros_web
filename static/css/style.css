@@ -12,7 +12,25 @@
   box-sizing: border-box;
 }
 
+.left{
+  position:absolute;
+  left:5%;
+   top:45%;
+   animation: fadeIn 3s ease-in-out infinite;
+}
 
+.right{
+  position:absolute;
+   top:45%; 
+   right:5%;
+   animation: fadeIn 3s ease-in-out infinite;
+}
+@keyframes fadeIn {
+  0% { opacity:0; }
+ 10% { opacity:1; }
+ 90% { opacity:1; }
+100% { opacity:0; }
+ }
 .navigation-button{
   width: 90px !important;
   font-size: 12px;
