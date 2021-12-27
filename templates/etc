@@ -7,14 +7,15 @@ Operation Index
 
 <script type="text/javascript" src="{{ url_for('static', filename='js/navpose.js')}}"></script>
 <div id ="sterlization" class="container">
+  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"> 
+  <label class="form-check-label" for="flexCheckDefault">The robot is currently in the room</label>
   <div class="d-flex flex-column">
-    <div class="p-1"><img src="{{ url_for('static', filename='/img/1.png')}}" alt=""><span id= one-blue-heading>&nbsp; Open Door</span></div>
-    <div class="p-1"><img src="{{ url_for('static', filename='/img/lit_blank.png')}}" alt=""><span class= "para">&nbsp; Open the door and press the button</span></div>
-    <div id = "div-done-btn" class="p-1"><img src="{{ url_for('static', filename='/img/lit_blank.png')}}" alt=""><span class= "para">&nbsp; </span><button style="position: absolute; left: 6%;" type="button" class="btn btn-primary btn-sm" id = "display_btn">Done</button></div>
+    <div class="p-2"><img src="{{ url_for('static', filename='/img/1.png')}}" alt=""><span class= one-blue-heading>&nbsp; Open Door</span></div>
+    <div class="p-2"><img src="{{ url_for('static', filename='/img/lit_blank.png')}}" alt=""><span class= "para">&nbsp; Open the door and press the button</span></div>
+    <div class="p-2"><img src="{{ url_for('static', filename='/img/lit_blank.png')}}" alt=""><span class= "para">&nbsp; </span><button style="position: absolute; left: 6%;" type="button" class="btn btn-primary btn-sm" >Done</button></div>
     <br>
-    <div class="p-2"><img src="{{ url_for('static', filename='/img/2.png')}}" alt=""><span id= two-blue-heading>&nbsp; Security Checklist</span></div>
-    <div class="p-1"><img src="{{ url_for('static', filename='/img/lit_blank.png')}}" alt=""><span class= "para">&nbsp; Precheck for all the precaution have been taken for sterlization</span></div>
-  <div id= "u">
+    <div class="p-2"><img src="{{ url_for('static', filename='/img/2.png')}}" alt=""><span class= two-blue-heading>&nbsp; Security Checklist</span></div>
+    <div class="p-2"><img src="{{ url_for('static', filename='/img/lit_blank.png')}}" alt=""><span class= "para">&nbsp; Precheck for all the precaution have been taken for sterlization</span></div>
     <div id = "my-check" class="p-1">
       <div class="row mx-md-n5">
        
@@ -74,8 +75,26 @@ Operation Index
       
 
     </div>
-    
-    
+    <br>
+    <div id = "my-check" class="p-1">
+      <div class="row mx-md-n5">
+       
+        <div class="col px-md-5 ">
+          <div class = "p-0 form-check" >
+                     
+             <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"> 
+             <label class="form-check-label" for="flexCheckDefault">The room has been cleaned</label>
+
+             
+          
+        </div>
+ 
+        </div>
+      </div>
+
+      
+
+    </div>
     <br>
     <div id = "my-check" class="p-1">
       <div class="row mx-md-n5">
@@ -120,12 +139,11 @@ Operation Index
   </div>
     
     <br>
-    <div class="p-2"><img src="{{ url_for('static', filename='/img/3.png')}}" alt=""><span id= three-blue-heading>&nbsp; Press Button</span></div>
-    <div class="p-1"><img src="{{ url_for('static', filename='/img/lit_blank.png')}}" alt=""><span class= para>&nbsp; Press the flashing button on the Robot and do out of the room</span></div>
+    <div class="p-2"><img src="{{ url_for('static', filename='/img/3.png')}}" alt=""><span class= three-blue-heading>&nbsp; Press Button</span></div>
+    <div class="p-2"><img src="{{ url_for('static', filename='/img/lit_blank.png')}}" alt=""><span class= para>&nbsp; Press the flashing button on the Robot and do out of the room</span></div>
     <br>
-    <div class="p-2"><img src="{{ url_for('static', filename='/img/4.png')}}" alt=""><span id= four-blue-heading>&nbsp; Device on Door</span></div>
-    <div class="p-1"><img src="{{ url_for('static', filename='/img/lit_blank.png')}}" alt=""><span class= para>&nbsp; Attach the device on the door and close it. Please be aware that any movement of the device from now on will stop the disinfection press the button to start the disinfection</span></div>
-    <div class="p-1"><span class= "para">&nbsp; </span><button style="position: absolute; left: 6%;" type="button" class="btn btn-danger btn-sm" id = "start_disinfection">Start Disinfection</button></div>
+    <div class="p-2"><img src="{{ url_for('static', filename='/img/4.png')}}" alt=""><span class= four-blue-heading>&nbsp; Device on Door</span></div>
+    <div class="p-2"><img src="{{ url_for('static', filename='/img/lit_blank.png')}}" alt=""><span class= para>&nbsp; Attach the device on the door and close it. Please be aware that any movement of the device from now on will stop the disinfection press the button to start the disinfection</span></div>
     
     
     

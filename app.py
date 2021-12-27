@@ -7,6 +7,7 @@ import time
 import sqlite3
 import json
 import csv
+from threading import Thread
 
 
 active_map=" "
@@ -18,6 +19,11 @@ class DataStore():
 	mapping=False
 	activeMap=None
 	previousMap=None
+	send_pose_name=None
+
+def send_pose_th():
+        
+	os.system( "python3 "+os.path.expanduser('~')+"/catkin_ws/src/send_goal/src/scripts/send_corridor_pose.py -r "+new_data.send_pose_name)
 
 def update_task(conn, task):
     """
@@ -468,10 +474,6 @@ def navigation():
 #Operation application part
 @app.route('/opindex')
 def op_index():
-	return render_template('op_index.html')
-
-@app.route('/selectpose')
-def select_pose():
 	activateMap('corridor_map')
 	if(new_data.previousMap != None):
 	        deactivateMap(new_data.previousMap)
@@ -489,6 +491,11 @@ def select_pose():
 	else:
 		roslaunch_process.start_navigation("corridor_map")
 		new_data.navigation=True
+	return render_template('op_index.html')
+
+@app.route('/selectpose')
+def select_pose():
+	
 	poses=[]
 	for x in os.listdir(os.getcwd()+"/static/"):
 	    if x.endswith(".json"):
@@ -505,10 +512,19 @@ def select_pose():
 def sendpose():
 	
 	posename = request.args.get('posename')
+	_posename=posename.replace(" ","_")
+	new_data.send_pose_name=_posename
+	send_pose_thread = Thread(target=send_pose_th, )
+	send_pose_thread.start()
 	return render_template("nav_pose.html", posename=posename)
-	#_posename=posename.replace(" ","_")
-	#print(_posename)
-	#return _posename+".json"
+@app.route('/reached')
+def reached():
+	return redirect('/success')	
+
+@app.route('/success')
+def success():
+	return render_template("new.html")	
+
 if __name__ == '__main__':
 	#app.run(debug=False)
 	app.run(host='0.0.0.0', port=5000, debug=True, threaded=False)    
