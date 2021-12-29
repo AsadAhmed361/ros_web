@@ -22,15 +22,72 @@ $(document).ready(function(){
 
   $("#start_disinfection").click(function(){
     $("#sterlization").hide(1000);
-    $("body").css('backdround-color','red');
+    $("body").css('background-color','#bb0b30');
+    $("#disinfection").show(1000);
+    var disinfection = false;
+let req_min=5;
+let req_sec=00;
+var cd = new Date();
+var countDownDate = new Date(String(cd.getMonth()+1)+" "+String(cd.getDate())+", "+String(cd.getFullYear())+" "+String(cd.getHours())+":"+String(cd.getMinutes()+req_min)+":"+String(req_sec)+":00").getTime();
+let elem = document.getElementById("greenBar");
+let stepValue = 0; 
+var per= null;
+var count = null;
+var x = setInterval(function() {
+
+  // Get today's date and time
+  var now = new Date().getTime();
   
+  // Find the distance between now and the count down date
+  var distance = countDownDate - now;
+  var timePer=(distance/now*100)*10000000;
+  
+  if(timePer>100){
+    per=2;
+  }
+  else{
+    per = parseInt(Math.abs(timePer-100));
+  }
+  console.log(per);
+  stepValue=per;
+   elem.style.width = (per ) + "%";
+      //elem.innerHTML = (stepValue ) + "%";
+      
+  // Time calculations for days, hours, minutes and seconds
+  //var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  //var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+  // Output the result in an element with id="demo"
+  if(minutes<10){
+    document.getElementById("demoo").innerHTML = "0"+minutes + ":" + seconds ;
+  }
+  if(seconds<10){
+    document.getElementById("demoo").innerHTML = minutes + ":" + "0"+seconds ;
+  }
+  if((minutes<10)&&(seconds<10)){
+    document.getElementById("demoo").innerHTML = "0"+minutes + ":" + "0"+seconds ;
+  }
+  count = count+1;
+    
+  // If the count down is over, write some text 
+  if (distance < 0) {
+    clearInterval(x);
+    count = count/60;
+    $("body").css('background-color','#00cb80');
+    $("#disinfection").hide(1000);
+    $("#dis_fin").show(1000);
+    document.getElementById("demo").innerHTML = "Time spend disinfection: "+ String(count)+" Sminutes";
+  }
+}, 1000);
   });
 
 });
 
 
   var ros = new ROSLIB.Ros({
-    url : 'ws://192.168.0.125:9090'
+    url : 'ws://192.168.0.109:9090'
   });
 
   ros.on('connection', function() {
