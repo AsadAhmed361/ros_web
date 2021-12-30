@@ -87,7 +87,7 @@ var x = setInterval(function() {
 
 
   var ros = new ROSLIB.Ros({
-    url : 'ws://192.168.0.109:9090'
+    url : 'ws://192.168.0.107:9090'
   });
 
   ros.on('connection', function() {

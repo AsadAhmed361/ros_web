@@ -4,10 +4,33 @@ Corridor Poses
 {% endblock %}
 
 {% block content %}
-<main id="main" class="main">
-
+<script type="text/javascript" src="{{ url_for('static', filename='js/corridor_poses.js')}}"></script>
+<div  id ="div-popup">
+  <br>
+  <br>
+  <section class="mx-auto my-5" style="max-width: 23rem;">
+      
+    <div class="card testimonial-card mt-2 mb-3">
+      <div class="card-up aqua-gradient"></div>
+      
+      <div class="card-body text-center">
+        <h4 id = "h" class="card-title font-weight-bold"></h4>
+        <hr>
+       
+         <img id ="load" src = "{{ url_for('static', filename='/img/load.gif')}}">
+          <button id = "click" type="button" class="btn btn-success">Ok</button>
+        
+        
+      </div>
+    </div>
     
+  </section>
+</div>
+<main id="main" class="main">
+  
+  
     <section class="section dashboard">
+     
       <div class="row">
 
         <!-- Left side columns -->
@@ -39,7 +62,7 @@ Corridor Poses
                        
                        
                         
-                        <td ><a href="#" style=color:black; class="droptextt" >{{pose}}</a></td>
+                        <td onclick ="myfunction('{{pose}}')" ><a   href="#" style=color:black; class="droptextt" >{{pose}}</a></td>
                         
                         <td><a class="droptext" href="http://192.168.0.125:5000/corridor_poses/deletepose?posename={{pose}}"><span class="close-navigation">&times</span></a></td>
                         
@@ -79,6 +102,7 @@ Corridor Poses
         
 
       </div>
+      
     </section>
 
   </main><!-- End #main -->

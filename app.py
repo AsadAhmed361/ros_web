@@ -349,6 +349,7 @@ def savemap():
 	mapname_rec = request.get_data().decode('utf-8')
 	x = mapname_rec.index("*")
 	mapname=mapname_rec[:x]
+	_mapname = mapname.replace(" ","_")
 	initialpose = mapname_rec[x+2:]
 	doc_pose=json.loads(initialpose)
 	print(doc_pose["position"])
@@ -358,7 +359,7 @@ def savemap():
 	orientation_w=doc_pose["orientation"]["w"]
 	Header=['frame_id','stamp','pos_x','pos_y','pos_z','orientation_x','orientation_y','orientation_z','orientation_w', 'covariance']
 	Data=['map', '0', pos_x,pos_y, '0.0', '0.0', '0.0', orientation_z, orientation_w, "(0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.06853891945200942)"]
-	path="/home/asad/ros_web/static/initialposes/"+mapname+"_initialpose.csv"
+	path="/home/asad/ros_web/static/initialposes/"+_mapname+"_initialpose.csv"
 	with open(path, 'w', encoding='UTF8') as f:
 	    writer = csv.writer(f)
 	    writer.writerow(Header)
@@ -367,12 +368,12 @@ def savemap():
 	#print(mapname)
 	with get_db():
 		try:
-			task_1 = (mapname,'warning','Inactive')
+			task_1 = (_mapname,'warning','Inactive')
 			create_task(get_db(), task_1)
 		except Error as e:
 			print(e) 
-	os.system("rosrun map_server map_saver -f"+" "+os.path.join(os.getcwd(),"static",mapname))
-	os.system("convert"+" "+os.getcwd()+"/static/"+mapname+".pgm"+" "+os.getcwd()+"/static/"+mapname+".png")
+	os.system("rosrun map_server map_saver -f"+" "+os.path.join(os.getcwd(),"static",_mapname))
+	os.system("convert"+" "+os.getcwd()+"/static/"+_mapname+".pgm"+" "+os.getcwd()+"/static/"+_mapname+".png")
 	new_data.mapping=False
 	roslaunch_process.stop_mapping()
 	if(new_data.activeMap != None):
@@ -517,6 +518,18 @@ def sendpose():
 	send_pose_thread = Thread(target=send_pose_th, )
 	send_pose_thread.start()
 	return render_template("nav_pose.html", posename=posename)
+
+@app.route('/corridor_poses/sendpose',  methods=['POST'])
+def sendposee():
+	posename=request.get_data().decode('utf-8')
+	_posename=posename.replace(" ","_")
+	new_data.send_pose_name=_posename
+	send_pose_thread = Thread(target=send_pose_th, )
+	send_pose_thread.start()
+	
+
+	return ("success")
+
 @app.route('/reached')
 def reached():
 	return redirect('/success')	
@@ -524,6 +537,8 @@ def reached():
 @app.route('/success')
 def success():
 	return render_template("new.html")	
+
+
 
 if __name__ == '__main__':
 	#app.run(debug=False)
